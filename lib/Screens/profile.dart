@@ -8,23 +8,22 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  int _selectedIndex = 2; // Profile tab selected by default
+  int _selectedIndex = 2;
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
 
-    // Handle navigation based on index
     switch (index) {
       case 0:
-        Navigator.pushNamed(context, '/'); // Home
+        Navigator.pushNamed(context, '/product');
         break;
       case 1:
-        Navigator.pushNamed(context, '/cart'); // Cart
+        Navigator.pushNamed(context, '/cart');
         break;
       case 2:
-        Navigator.pushNamed(context, '/profile'); // Profile (current)
+        Navigator.pushNamed(context, '/profile');
         break;
     }
   }
@@ -34,28 +33,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
     List<Map<String, String>> orders = [
       {
         "id": "#001",
-        "product": "Rolex Watch",
+        "product": "Rolex Cosmograph, Omega New",
         "date": "2 Jan, 2024",
         "price": "Rs. 400000",
         "status": "Pending"
       },
       {
         "id": "#002",
-        "product": "Omega Watch",
+        "product": "Seiko SNKDY082",
         "date": "5 Jan, 2024",
         "price": "Rs. 350000",
         "status": "Dispatched"
       },
       {
         "id": "#003",
-        "product": "Tag Heuer",
+        "product": "Citizen Tsuyosa, Seiko SNKDY082",
         "date": "10 Jan, 2024",
         "price": "Rs. 250000",
         "status": "Accepted"
       },
       {
         "id": "#004",
-        "product": "Casio Watch",
+        "product": "Casio G-Shok",
         "date": "15 Jan, 2024",
         "price": "Rs. 50000",
         "status": "Canceled"
@@ -107,15 +106,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SizedBox(height: 5),
                 Text("+94 77 155 9994", style: TextStyle(color: Colors.grey)),
                 SizedBox(height: 5),
-                Text("Address: 24/5, Mahakatuwana rd, Colombo",
-                    style: TextStyle(color: Colors.grey)),
               ],
             ),
           ),
-
           const SizedBox(height: 10),
-
-          // ✅ Order History Title
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Align(
@@ -127,10 +121,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       color: Colors.black)),
             ),
           ),
-
           const SizedBox(height: 10),
-
-          // ✅ Order List
           Expanded(
             child: ListView.builder(
               itemCount: orders.length,
@@ -161,22 +152,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed, // Ensures fixed layout
-        currentIndex: _selectedIndex, // Set active tab dynamically
-        onTap: _onItemTapped,
+        type: BottomNavigationBarType.fixed,
+        currentIndex: 0,
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              Navigator.pushNamed(context, '/home');
+              break;
+            case 1:
+              Navigator.pushNamed(context, '/cart');
+              break;
+            case 2:
+              Navigator.pushNamed(context, '/profile');
+              break;
+          }
+        },
         items: const [
           BottomNavigationBarItem(
-              icon: Icon(Icons.home, color: Colors.black), label: ''),
-          BottomNavigationBarItem(
               icon: Icon(
-                Icons.shopping_bag,
+                Icons.home,
                 color: Colors.black,
               ),
               label: ''),
           BottomNavigationBarItem(
               icon: Icon(
-                Icons.person,
+                Icons.shopping_bag,
                 color: Colors.deepPurple,
+              ),
+              label: ''),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person,
+                color: Colors.black,
               ),
               label: ''),
         ],

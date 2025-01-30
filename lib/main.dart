@@ -20,17 +20,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: 'Roboto', // Apply Roboto globally
+        fontFamily: 'Roboto',
       ),
-      initialRoute: '/', // Default route when app starts
+      initialRoute: '/',
       routes: {
-        '/': (context) => const HomeScreen(), // Home Page
-        // '/login': (context) => const LoginScreen(), // Login Page
-        '/product': (context) => const ProductDetailScreen(), // Product Page
-        '/cart': (context) => const CartScreen(), // Cart Page
-        '/profile': (context) => const ProfileScreen(), // Profile Page
-        // '/signup': (context) => const SignupScreen(), // Signup Page
-        '/report': (context) => const ReportProductScreen(), // Report Page
+        '/': (context) => const LoginScreen(),
+        '/home': (context) => const HomeScreen(),
+        '/product': (context) => const ProductDetailScreen(),
+        '/cart': (context) => const CartScreen(),
+        '/profile': (context) => const ProfileScreen(),
+        '/signup': (context) => const SignupScreen(),
+        '/report': (context) => const ReportProductScreen(),
       },
     );
   }

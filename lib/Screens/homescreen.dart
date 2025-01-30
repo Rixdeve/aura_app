@@ -24,10 +24,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<String> brandLogos = List.filled(
-    10,
-    "https://www.hlgross.com/cdn/shop/files/m126233-0035_drp-upright-bba-with-shadow.png?v=1720528979",
-  );
+  final List<String> brandLogos = [
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDs0ZEzCw4VfdjoOIno3Xzy3WNvK5V2kLIjA&s",
+    "https://1000logos.net/wp-content/uploads/2018/10/Seiko-Logo.png",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgRg1N5jBK4v43SbAYk5Ny_3MNfNYXz2LLwA&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPWRuWNlugg0pYzu4RwgrCNYbxhH4ImXtJew&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYcyve5JV1rvtp-wLJ-sVUhfJ6TONSjF8v7w&s",
+    "https://img.freepik.com/free-vector/perfume-shop-logo-template-beauty-business-branding-design-black-white-vector_53876-156447.jpg",
+    "https://bcassetcdn.com/public/blog/wp-content/uploads/2021/10/22125209/adequate-fragrance-by-tamas-mihaly-dribbble.png",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQztVS8DaAo-HLrk34Uao-WM6H_4kcx42EdmQ&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSt_AXrI7ONv2QDdsGjG0buYi5Xxlq7joaBA&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2e_impr6ewrcfxUhqE5ZA3xnE7paS_5LyQw&s"
+  ];
 
   final List<Map<String, dynamic>> products = [
     {
@@ -57,6 +65,19 @@ class _HomeScreenState extends State<HomeScreen> {
       "model": "G-Shock",
       "price": "Rs. 50000",
     },
+    {
+      "image": "https://m.media-amazon.com/images/I/71ahg3sYRAL.jpg",
+      "name": "Victoria's Secret",
+      "model": "Bombshell",
+      "price": "Rs. 200000",
+    },
+    {
+      "image":
+          "https://www.chanel.com/images/w_0.51,h_0.51,c_crop/q_auto:good,f_auto,fl_lossy,dpr_1.1/w_1920/n-5-eau-de-parfum-spray-3-4fl-oz--packshot-default-125530-9539148742686.jpg",
+      "name": "Channel",
+      "model": "COCO Medemoiselle",
+      "price": "Rs. 50000",
+    },
   ];
 
   String selectedValue = 'Value'; // Default selection
@@ -80,7 +101,6 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // ✅ Top Image Banner
             Image.network(
               "https://drive.google.com/uc?export=view&id=1S8Y3gk4DpVbDBQITX4jC5qdNGt-rvg33",
               height: 120,
@@ -90,8 +110,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   const Icon(Icons.error, color: Colors.red),
             ),
             const SizedBox(height: 10),
-
-            // ✅ Sorting Dropdown
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: DropdownButton<String>(
@@ -102,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     selectedValue = newValue!;
                   });
                 },
-                items: <String>['Value', 'Price', 'Popularity']
+                items: <String>['Value', 'Perfume', 'Watches']
                     .map<DropdownMenuItem<String>>(
                       (String value) => DropdownMenuItem<String>(
                         value: value,
@@ -112,10 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     .toList(),
               ),
             ),
-
             const SizedBox(height: 10),
-
-            // ✅ Brand Logos Grid View
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: GridView.builder(
@@ -144,19 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
             ),
-
             const SizedBox(height: 10),
-
-            TextButton(
-              onPressed: () {},
-              child: const Text(
-                "VIEW ALL",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ),
-
-            const SizedBox(height: 10),
-
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: GridView.builder(
@@ -199,18 +202,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
             ),
-
             const SizedBox(height: 20),
           ],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed, // Ensures fixed layout
-        currentIndex: 0, // Set active tab (update dynamically if needed)
+        type: BottomNavigationBarType.fixed,
+        currentIndex: 0,
         onTap: (index) {
           switch (index) {
             case 0:
-              Navigator.pushNamed(context, '/'); // Home
+              Navigator.pushNamed(context, '/product'); // Home
               break;
             case 1:
               Navigator.pushNamed(context, '/cart'); // Cart Page

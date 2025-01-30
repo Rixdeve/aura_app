@@ -102,7 +102,7 @@ class ReportProductScreen extends StatelessWidget {
         onTap: (index) {
           switch (index) {
             case 0:
-              Navigator.pushNamed(context, '/'); // Home
+              Navigator.pushNamed(context, '/product'); // Home
               break;
             case 1:
               Navigator.pushNamed(context, '/cart'); // Product Page

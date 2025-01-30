@@ -10,9 +10,9 @@ class ProductDetailScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         centerTitle: true,
         elevation: 0,
-        title: Image.asset(
-          'assets/images/logo-remove.png', // Ensure correct path in pubspec.yaml
-          height: 40,
+        title: Image.network(
+          "https://drive.google.com/uc?export=view&id=1BTlJm1oIIsgK-w5tOC1BG3Gg8hvG4UN_",
+          height: 65,
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
@@ -24,17 +24,12 @@ class ProductDetailScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 10),
-
-            // ✅ Product Image
-            Image.asset(
-              'assets/images/rolex_watch.png', // Ensure correct path
+            Image.network(
+              "https://www.hlgross.com/cdn/shop/files/m126233-0035_drp-upright-bba-with-shadow.png?v=1720528979",
               height: 200,
               fit: BoxFit.contain,
             ),
-
             const SizedBox(height: 10),
-
-            // ✅ Product Name & Model
             const Text(
               'Rolex',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -43,10 +38,7 @@ class ProductDetailScreen extends StatelessWidget {
               'Cosmograph',
               style: TextStyle(fontSize: 18, color: Colors.grey),
             ),
-
             const SizedBox(height: 10),
-
-            // ✅ Buy Now Button
             ElevatedButton(
               onPressed: () {
                 // Add functionality here
@@ -62,26 +54,17 @@ class ProductDetailScreen extends StatelessWidget {
               child:
                   const Text('BUY NOW', style: TextStyle(color: Colors.white)),
             ),
-
             const SizedBox(height: 10),
-
-            // ✅ Product Price
             const Text(
               'Rs. 400000',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-
             const SizedBox(height: 20),
-
-            // ✅ Specification Title
             const Text(
               'FULL SPECIFICATION',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-
             const SizedBox(height: 10),
-
-            // ✅ Specifications Table
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Table(
@@ -98,27 +81,50 @@ class ProductDetailScreen extends StatelessWidget {
                 ],
               ),
             ),
-
             const SizedBox(height: 20),
           ],
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 0),
-        child: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_bag_outlined), label: ''),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
-          ],
-        ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        currentIndex: 0,
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              Navigator.pushNamed(context, '/home');
+              break;
+            case 1:
+              Navigator.pushNamed(context, '/cart');
+              break;
+            case 2:
+              Navigator.pushNamed(context, '/profile');
+              break;
+          }
+        },
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+                color: Colors.black,
+              ),
+              label: ''),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.shopping_bag,
+                color: Colors.deepPurple,
+              ),
+              label: ''),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person,
+                color: Colors.black,
+              ),
+              label: ''),
+        ],
       ),
     );
   }
 
-  // ✅ Table Row Helper Function
   TableRow _buildTableRow(String leftTitle, String rightTitle, String leftValue,
       String rightValue) {
     return TableRow(
@@ -131,7 +137,6 @@ class ProductDetailScreen extends StatelessWidget {
     );
   }
 
-  // ✅ Table Cell Helper Function
   Widget _buildTableCell(String text) {
     return Padding(
       padding: const EdgeInsets.all(8.0),

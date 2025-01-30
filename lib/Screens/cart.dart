@@ -34,7 +34,6 @@ class CartScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          // ✅ Cart Items List (Now using Image.network)
           Expanded(
             child: ListView.builder(
               itemCount: cartItems.length,
@@ -44,7 +43,7 @@ class CartScreen extends StatelessWidget {
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 16),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(5), // Rounded edges
+                    borderRadius: BorderRadius.circular(5),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey,
@@ -58,7 +57,7 @@ class CartScreen extends StatelessWidget {
                     contentPadding:
                         const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                     leading: ClipRRect(
-                      borderRadius: BorderRadius.circular(10), // Image rounded
+                      borderRadius: BorderRadius.circular(10),
                       child: Image.network(
                         cartItems[index]["image"]!,
                         width: 50,
@@ -76,8 +75,6 @@ class CartScreen extends StatelessWidget {
               },
             ),
           ),
-
-          // ✅ Checkout Button (No Calculation)
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -94,7 +91,7 @@ class CartScreen extends StatelessWidget {
                   backgroundColor: Colors.black,
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10), // Rounded button
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
                 child: const Text("Checkout",
@@ -105,18 +102,18 @@ class CartScreen extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed, // Ensures fixed layout
-        currentIndex: 0, // Set active tab (update dynamically if needed)
+        type: BottomNavigationBarType.fixed,
+        currentIndex: 0,
         onTap: (index) {
           switch (index) {
             case 0:
-              Navigator.pushNamed(context, '/'); // Home
+              Navigator.pushNamed(context, '/home');
               break;
             case 1:
-              Navigator.pushNamed(context, '/cart'); // Product Page
+              Navigator.pushNamed(context, '/cart');
               break;
             case 2:
-              Navigator.pushNamed(context, '/profile'); // Login Page
+              Navigator.pushNamed(context, '/profile');
               break;
           }
         },
