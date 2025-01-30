@@ -175,12 +175,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (context, index) {
                   return Column(
                     children: [
-                      Image.network(
-                        products[index]["image"],
-                        height: 120,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) =>
-                            const Icon(Icons.error, color: Colors.red),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, '/product');
+                        },
+                        child: Image.network(
+                          products[index]["image"],
+                          height: 120,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              const Icon(Icons.error, color: Colors.red),
+                        ),
                       ),
                       Text(
                         products[index]["name"],

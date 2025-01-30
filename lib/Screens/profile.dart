@@ -177,13 +177,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.shopping_bag,
-                color: Colors.deepPurple,
+                color: Colors.black,
               ),
               label: ''),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.person,
-                color: Colors.black,
+                color: Colors.deepPurple,
               ),
               label: ''),
         ],

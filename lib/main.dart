@@ -21,7 +21,38 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Roboto',
+        brightness: Brightness.light,
+        primarySwatch: Colors.teal,
+        scaffoldBackgroundColor: Colors.white,
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+        ),
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(color: Colors.black), // Default text color
+          bodyMedium: TextStyle(color: Colors.black), // Secondary text
+        ),
       ),
+
+      // Define Dark Theme
+      darkTheme: ThemeData(
+        fontFamily: 'Roboto',
+        brightness: Brightness.dark,
+        primarySwatch: Colors.teal,
+        scaffoldBackgroundColor: Colors.grey[900],
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.teal),
+        ),
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(
+              color: Colors.white), // Default text color for dark mode
+          bodyMedium: TextStyle(color: Colors.white70), // Secondary text
+        ),
+      ),
+
+      // Automatically respond to system settings
+      themeMode: ThemeMode.system,
+
+      // Define routes
       initialRoute: '/',
       routes: {
         '/': (context) => const LoginScreen(),
