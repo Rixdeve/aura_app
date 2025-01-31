@@ -32,8 +32,6 @@ class MyApp extends StatelessWidget {
           bodyMedium: TextStyle(color: Colors.black),
         ),
       ),
-
-      // Define Dark Theme
       darkTheme: ThemeData(
         fontFamily: 'Roboto',
         brightness: Brightness.dark,
@@ -47,10 +45,7 @@ class MyApp extends StatelessWidget {
           bodyMedium: TextStyle(color: Colors.white70),
         ),
       ),
-
       themeMode: ThemeMode.system,
-
-      // Define routes
       initialRoute: '/',
       routes: {
         '/': (context) => const LoginScreen(),
