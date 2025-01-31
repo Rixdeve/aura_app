@@ -80,10 +80,13 @@ class _HomeScreenState extends State<HomeScreen> {
     },
   ];
 
-  String selectedValue = 'Value'; // Default selection
+  String selectedValue = 'Value';
 
   @override
   Widget build(BuildContext context) {
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -91,10 +94,6 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Image.network(
           'https://drive.google.com/uc?export=view&id=1BTlJm1oIIsgK-w5tOC1BG3Gg8hvG4UN_',
           height: 65,
-          errorBuilder: (context, error, stackTrace) => const Icon(
-            Icons.error,
-            color: Colors.red,
-          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -103,13 +102,11 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Image.network(
               "https://drive.google.com/uc?export=view&id=1S8Y3gk4DpVbDBQITX4jC5qdNGt-rvg33",
-              height: 120,
+              height: isLandscape ? 180 : 120,
               width: double.infinity,
               fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) =>
-                  const Icon(Icons.error, color: Colors.red),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: DropdownButton<String>(
@@ -136,8 +133,8 @@ class _HomeScreenState extends State<HomeScreen> {
               child: GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: isLandscape ? 8 : 4,
                   mainAxisSpacing: 10,
                   crossAxisSpacing: 10,
                 ),
@@ -152,24 +149,23 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Image.network(
                       brandLogos[index],
                       fit: BoxFit.contain,
-                      errorBuilder: (context, error, stackTrace) =>
-                          const Icon(Icons.error, color: Colors.red),
                     ),
                   );
                 },
               ),
             ),
             const SizedBox(height: 10),
+            const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: isLandscape ? 5 : 2,
                   mainAxisSpacing: 15,
                   crossAxisSpacing: 15,
-                  childAspectRatio: 0.7,
+                  childAspectRatio: 0.65,
                 ),
                 itemCount: products.length,
                 itemBuilder: (context, index) {
@@ -181,10 +177,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         },
                         child: Image.network(
                           products[index]["image"],
-                          height: 120,
+                          height: isLandscape ? 140 : 120,
                           fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) =>
-                              const Icon(Icons.error, color: Colors.red),
                         ),
                       ),
                       Text(
@@ -217,36 +211,27 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: (index) {
           switch (index) {
             case 0:
-              Navigator.pushNamed(context, '/product'); // Home
+              Navigator.pushNamed(context, '/home');
               break;
             case 1:
-              Navigator.pushNamed(context, '/cart'); // Cart Page
+              Navigator.pushNamed(context, '/cart');
               break;
             case 2:
-              Navigator.pushNamed(context, '/profile'); // Profile Page
+              Navigator.pushNamed(context, '/profile');
               break;
           }
         },
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-              color: Colors.deepPurple,
-            ),
+            icon: Icon(Icons.home, color: Colors.deepPurple),
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.shopping_bag_rounded,
-              color: Colors.black,
-            ),
+            icon: Icon(Icons.shopping_bag_rounded, color: Colors.black),
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person,
-              color: Colors.black,
-            ),
+            icon: Icon(Icons.person, color: Colors.black),
             label: '',
           ),
         ],

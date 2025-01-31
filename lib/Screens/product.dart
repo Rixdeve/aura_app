@@ -45,8 +45,8 @@ class ProductDetailScreen extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black,
-                padding: const EdgeInsets.symmetric(vertical: 5),
-                minimumSize: const Size(double.infinity, 30),
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                minimumSize: const Size(double.infinity, 20),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
                 ),
@@ -73,10 +73,10 @@ class ProductDetailScreen extends StatelessWidget {
                   1: FlexColumnWidth(1),
                 },
                 children: [
-                  _buildTableRow('Bezel', 'Brand',
-                      'Bi-directional Rotating Bezel', 'Rolex'),
-                  _buildTableRow('Case Shape', 'Gender', 'Round', 'Male'),
-                  _buildTableRow('Water Resistance', 'Warranty Period', '200 M',
+                  _buildTableRow('Bezel', 'Bi-directional Rotating Bezel',
+                      'Brand', 'Rolex'),
+                  _buildTableRow('Case Shape', 'Round', 'Gender', 'Male'),
+                  _buildTableRow('Water Resistance', '200 M', 'Warranty Period',
                       '5 Years'),
                 ],
               ),

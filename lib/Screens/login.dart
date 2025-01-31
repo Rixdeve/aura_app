@@ -91,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () {
                     Navigator.pushNamed(context, '/signup');
                   },
-                  child: const Text("Don't have an account? Sign up"),
+                  child: const Text("Sign up"),
                 ),
               ),
             ],

@@ -17,7 +17,7 @@ class ReportProductScreen extends StatelessWidget {
         ),
         iconTheme: const IconThemeData(color: Colors.black),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back), // 🔙 Back Button
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context); // Navigate back
           },
@@ -28,15 +28,11 @@ class ReportProductScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 📌 Order ID (Label instead of TextField)
             const Text(
-              "Order ID: #001", // Replace with dynamic Order ID if needed
+              "Order ID: #006", // Replace with dynamic Order ID if needed
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
-
             const SizedBox(height: 15),
-
-            // 📌 Issue Description
             const Text(
               "Issue Description",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -51,20 +47,16 @@ class ReportProductScreen extends StatelessWidget {
                 ),
               ),
             ),
-
             const SizedBox(height: 15),
-
-            // 📌 Attach Image (Optional)
             const Text(
               "Attach Image (Optional)",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
-
             Row(
               children: [
                 GestureDetector(
-                  onTap: () {}, // No function, just UI
+                  onTap: () {},
                   child: CircleAvatar(
                     radius: 30,
                     backgroundColor: Colors.grey,
@@ -74,15 +66,11 @@ class ReportProductScreen extends StatelessWidget {
                 ),
               ],
             ),
-
             const SizedBox(height: 20),
-
-            // 📌 Submit Button
-
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {}, // No function, just UI
+                onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
                   padding: const EdgeInsets.symmetric(vertical: 15),
@@ -97,8 +85,8 @@ class ReportProductScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed, // Ensures fixed layout
-        currentIndex: 0, // Set active tab (update dynamically if needed)
+        type: BottomNavigationBarType.fixed,
+        currentIndex: 0,
         onTap: (index) {
           switch (index) {
             case 0:

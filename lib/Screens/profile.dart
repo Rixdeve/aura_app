@@ -8,26 +8,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  int _selectedIndex = 2;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-
-    switch (index) {
-      case 0:
-        Navigator.pushNamed(context, '/product');
-        break;
-      case 1:
-        Navigator.pushNamed(context, '/cart');
-        break;
-      case 2:
-        Navigator.pushNamed(context, '/profile');
-        break;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     List<Map<String, String>> orders = [
@@ -87,69 +67,119 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(12),
-            color: Colors.white,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text("Risinu Kaluarchchi",
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(12),
+              color: Colors.white,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text("Risinu Kaluarchchi",
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black)),
+                  SizedBox(height: 5),
+                  Text("risinuh@email.com",
+                      style: TextStyle(color: Colors.grey)),
+                  SizedBox(height: 5),
+                  Text("+94 77 155 9994", style: TextStyle(color: Colors.grey)),
+                  SizedBox(height: 5),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text("Order History",
                     style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.black)),
-                SizedBox(height: 5),
-                Text("risinuh@email.com", style: TextStyle(color: Colors.grey)),
-                SizedBox(height: 5),
-                Text("+94 77 155 9994", style: TextStyle(color: Colors.grey)),
-                SizedBox(height: 5),
-              ],
+              ),
             ),
-          ),
-          const SizedBox(height: 10),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text("Order History",
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black)),
-            ),
-          ),
-          const SizedBox(height: 10),
-          Expanded(
-            child: ListView.builder(
+            const SizedBox(height: 20),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: orders.length,
               itemBuilder: (context, index) {
-                return Card(
+                return Container(
                   margin:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 16),
-                  child: ListTile(
-                    leading: const Icon(Icons.watch, color: Colors.black),
-                    title: Text(orders[index]["product"]!,
-                        style: const TextStyle(fontWeight: FontWeight.bold)),
-                    subtitle: Text(
-                        "${orders[index]["date"]} | ${orders[index]["id"]} | ${orders[index]["report"]}"),
-                    trailing: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(orders[index]["price"]!,
-                            style:
-                                const TextStyle(fontWeight: FontWeight.bold)),
-                        _buildStatusLabel(orders[index]["status"]!),
-                      ],
+                  height: 110,
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12), // Rounded edges
+                    ),
+                    elevation: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12), // Increased padding
+                      child: Row(
+                        children: [
+                          const Icon(Icons.watch,
+                              color: Colors.black, size: 28),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  orders[index]["product"]!,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                                ),
+                                Text(
+                                  "${orders[index]["date"]} | ${orders[index]["id"]}",
+                                  style: const TextStyle(color: Colors.grey),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                orders[index]["price"]!,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                              _buildStatusLabel(orders[index]["status"]!),
+                              if (orders[index]["status"] == "Delivered")
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(context, '/report');
+                                  },
+                                  child: const Text(
+                                    "Report",
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );
               },
             ),
-          ),
-        ],
+            const SizedBox(height: 20),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
