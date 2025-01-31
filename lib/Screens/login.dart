@@ -53,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 decoration: InputDecoration(
                   hintText: "Enter your password",
                   border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8)),
+                      borderRadius: BorderRadius.circular(5)),
                   suffixIcon: IconButton(
                     icon: Icon(_passwordVisible
                         ? Icons.visibility

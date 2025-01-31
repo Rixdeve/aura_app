@@ -28,8 +28,8 @@ class MyApp extends StatelessWidget {
           style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
         ),
         textTheme: const TextTheme(
-          bodyLarge: TextStyle(color: Colors.black), // Default text color
-          bodyMedium: TextStyle(color: Colors.black), // Secondary text
+          bodyLarge: TextStyle(color: Colors.black),
+          bodyMedium: TextStyle(color: Colors.black),
         ),
       ),
 
@@ -44,11 +44,10 @@ class MyApp extends StatelessWidget {
         ),
         textTheme: const TextTheme(
           bodyLarge: TextStyle(color: Colors.white),
-          bodyMedium: TextStyle(color: Colors.white70), // Secondary text
+          bodyMedium: TextStyle(color: Colors.white70),
         ),
       ),
 
-      // Automatically respond to system settings
       themeMode: ThemeMode.system,
 
       // Define routes

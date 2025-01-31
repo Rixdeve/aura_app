@@ -181,7 +181,7 @@ class _CartScreenState extends State<CartScreen> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        currentIndex: 1, // Set to cart page
+        currentIndex: 1,
         onTap: (index) {
           switch (index) {
             case 0:

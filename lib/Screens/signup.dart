@@ -53,7 +53,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 decoration: InputDecoration(
                   hintText: "Enter your email",
                   border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8)),
+                      borderRadius: BorderRadius.circular(5)),
                 ),
                 validator: (value) =>
                     value!.isEmpty ? "Please enter your email" : null,
@@ -67,7 +67,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 decoration: InputDecoration(
                   hintText: "Enter your password",
                   border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8)),
+                      borderRadius: BorderRadius.circular(5)),
                   suffixIcon: IconButton(
                     icon: Icon(_passwordVisible
                         ? Icons.visibility
