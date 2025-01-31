@@ -10,6 +10,8 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
     List<Map<String, String>> orders = [
       {
         "id": "#001",
@@ -50,19 +52,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
     ];
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         centerTitle: false,
         elevation: 0,
-        title: const Text(
+        title: Text(
           "Profile",
-          style: TextStyle(
-              color: Colors.black, fontSize: 22, fontWeight: FontWeight.bold),
+          style: theme.textTheme.titleLarge,
         ),
-        iconTheme: const IconThemeData(color: Colors.black),
+        iconTheme: IconThemeData(color: theme.iconTheme.color),
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout, color: Colors.black),
+            icon: Icon(Icons.logout, color: theme.iconTheme.color),
             onPressed: () {},
           ),
         ],
@@ -73,34 +74,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(12),
-              color: Colors.white,
+              decoration: BoxDecoration(
+                color: theme.cardColor,
+                borderRadius: BorderRadius.circular(10),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text("Risinu Kaluarchchi",
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black)),
-                  SizedBox(height: 5),
-                  Text("risinuh@email.com",
-                      style: TextStyle(color: Colors.grey)),
-                  SizedBox(height: 5),
-                  Text("+94 77 155 9994", style: TextStyle(color: Colors.grey)),
-                  SizedBox(height: 5),
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.bold, fontSize: 18)),
+                  const SizedBox(height: 5),
+                  Text("risinuh@email.com", style: theme.textTheme.bodyMedium),
+                  const SizedBox(height: 5),
+                  Text("+94 77 155 9994", style: theme.textTheme.bodyMedium),
+                  const SizedBox(height: 5),
                 ],
               ),
             ),
             const SizedBox(height: 10),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text("Order History",
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black)),
+                child: Text(
+                  "Order History",
+                  style: theme.textTheme.bodyLarge
+                      ?.copyWith(fontWeight: FontWeight.bold, fontSize: 18),
+                ),
               ),
             ),
             const SizedBox(height: 20),
@@ -114,16 +115,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 16),
                   height: 110,
                   child: Card(
+                    color: theme.cardColor,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12), // Rounded edges
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    elevation: 2,
+                    elevation: isDarkMode ? 0 : 2,
                     child: Padding(
-                      padding: const EdgeInsets.all(12), // Increased padding
+                      padding: const EdgeInsets.all(12),
                       child: Row(
                         children: [
-                          const Icon(Icons.watch,
-                              color: Colors.black, size: 28),
+                          Icon(Icons.watch,
+                              size: 28, color: theme.iconTheme.color),
                           const SizedBox(width: 12),
                           Expanded(
                             child: Column(
@@ -132,13 +134,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 Text(
                                   orders[index]["product"]!,
-                                  style: const TextStyle(
+                                  style: theme.textTheme.bodyLarge?.copyWith(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16),
                                 ),
                                 Text(
                                   "${orders[index]["date"]} | ${orders[index]["id"]}",
-                                  style: const TextStyle(color: Colors.grey),
+                                  style: theme.textTheme.bodyMedium,
                                 ),
                               ],
                             ),
@@ -149,7 +151,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             children: [
                               Text(
                                 orders[index]["price"]!,
-                                style: const TextStyle(
+                                style: theme.textTheme.bodyLarge?.copyWith(
                                     fontWeight: FontWeight.bold, fontSize: 16),
                               ),
                               _buildStatusLabel(orders[index]["status"]!),
@@ -158,13 +160,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   onTap: () {
                                     Navigator.pushNamed(context, '/report');
                                   },
-                                  child: const Text(
+                                  child: Text(
                                     "Report",
-                                    style: TextStyle(
+                                    style: theme.textTheme.bodyMedium?.copyWith(
                                       color: Colors.red,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 12,
-                                      decoration: TextDecoration.underline,
                                     ),
                                   ),
                                 ),

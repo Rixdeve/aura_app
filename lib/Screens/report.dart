@@ -5,21 +5,23 @@ class ReportProductScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         centerTitle: false,
         elevation: 0,
-        title: const Text(
+        title: Text(
           "Report Product",
-          style: TextStyle(
-              color: Colors.black, fontSize: 22, fontWeight: FontWeight.bold),
+          style: theme.textTheme.titleLarge,
         ),
-        iconTheme: const IconThemeData(color: Colors.black),
+        iconTheme: IconThemeData(color: theme.iconTheme.color),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context); // Navigate back
+            Navigator.pop(context);
           },
         ),
       ),
@@ -28,29 +30,36 @@ class ReportProductScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Order ID: #006", // Replace with dynamic Order ID if needed
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            Text(
+              "Order ID: #006",
+              style: theme.textTheme.bodyLarge
+                  ?.copyWith(fontWeight: FontWeight.bold, fontSize: 16),
             ),
             const SizedBox(height: 15),
-            const Text(
+
+            Text(
               "Issue Description",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: theme.textTheme.bodyLarge
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 5),
             TextField(
               maxLines: 4,
+              style: theme.textTheme.bodyLarge,
               decoration: InputDecoration(
                 hintText: "Describe the issue",
+                hintStyle: theme.textTheme.bodyMedium,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
             ),
             const SizedBox(height: 15),
-            const Text(
+
+            Text(
               "Attach Image (Optional)",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: theme.textTheme.bodyLarge
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             Row(
@@ -59,25 +68,39 @@ class ReportProductScreen extends StatelessWidget {
                   onTap: () {},
                   child: CircleAvatar(
                     radius: 30,
-                    backgroundColor: Colors.grey,
-                    child: const Icon(Icons.camera_alt,
-                        color: Colors.white, size: 30),
+                    backgroundColor: theme.colorScheme.secondary,
+                    child: Icon(Icons.camera_alt,
+                        color: isDarkMode ? Colors.black : Colors.white,
+                        size: 30),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    "Tap to upload an image",
+                    style: theme.textTheme.bodyMedium,
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 20),
+
+            // Submit Button
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
+                  backgroundColor: theme.colorScheme.primary,
                   padding: const EdgeInsets.symmetric(vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
-                child: const Text(
+                child: Text(
                   "Submit Report",
-                  style: TextStyle(color: Colors.white, fontSize: 16),
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                      color: theme.colorScheme.onPrimary, fontSize: 16),
                 ),
               ),
             ),

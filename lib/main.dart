@@ -40,11 +40,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.teal,
         scaffoldBackgroundColor: Colors.grey[900],
         elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(backgroundColor: Colors.teal),
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
         ),
         textTheme: const TextTheme(
-          bodyLarge: TextStyle(
-              color: Colors.white), // Default text color for dark mode
+          bodyLarge: TextStyle(color: Colors.white),
           bodyMedium: TextStyle(color: Colors.white70), // Secondary text
         ),
       ),

@@ -35,17 +35,18 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         centerTitle: false,
         elevation: 0,
         title: const Text(
           "Cart",
-          style: TextStyle(
-              color: Colors.black, fontSize: 22, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         ),
-        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: Column(
         children: [
@@ -58,16 +59,18 @@ class _CartScreenState extends State<CartScreen> {
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 16),
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: theme.cardColor,
                     borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.shade300,
-                        blurRadius: 5,
-                        spreadRadius: 1,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
+                    boxShadow: isDarkMode
+                        ? []
+                        : [
+                            BoxShadow(
+                              color: Colors.grey.shade300,
+                              blurRadius: 5,
+                              spreadRadius: 1,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
                   ),
                   child: Row(
                     children: [
@@ -85,13 +88,13 @@ class _CartScreenState extends State<CartScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(cartItems[index]["name"],
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 16)),
+                                style: theme.textTheme.bodyLarge
+                                    ?.copyWith(fontWeight: FontWeight.bold)),
                             const SizedBox(height: 5),
                             Text(
                               "Rs. ${cartItems[index]["price"]}",
-                              style: const TextStyle(
-                                  fontSize: 14, color: Colors.grey),
+                              style: theme.textTheme.bodyMedium
+                                  ?.copyWith(color: theme.hintColor),
                             ),
                           ],
                         ),
@@ -99,8 +102,8 @@ class _CartScreenState extends State<CartScreen> {
                       Row(
                         children: [
                           IconButton(
-                            icon: const Icon(Icons.remove_circle_outline,
-                                color: Colors.black),
+                            icon: Icon(Icons.remove_circle_outline,
+                                color: theme.iconTheme.color),
                             onPressed: () {
                               setState(() {
                                 if (cartItems[index]["quantity"] > 0) {
@@ -111,12 +114,12 @@ class _CartScreenState extends State<CartScreen> {
                           ),
                           Text(
                             "${cartItems[index]["quantity"]}",
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
+                            style: theme.textTheme.bodyLarge?.copyWith(
+                                fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                           IconButton(
-                            icon: const Icon(Icons.add_circle_outline,
-                                color: Colors.black),
+                            icon: Icon(Icons.add_circle_outline,
+                                color: theme.iconTheme.color),
                             onPressed: () {
                               setState(() {
                                 cartItems[index]["quantity"]++;
@@ -134,9 +137,9 @@ class _CartScreenState extends State<CartScreen> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: theme.cardColor,
               border: Border(
-                top: BorderSide(color: Colors.grey.shade300, width: 1),
+                top: BorderSide(color: theme.dividerColor, width: 1),
               ),
             ),
             child: Column(
@@ -144,15 +147,13 @@ class _CartScreenState extends State<CartScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      "Total:",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
+                    Text("Total:",
+                        style: theme.textTheme.bodyLarge?.copyWith(
+                            fontWeight: FontWeight.bold, fontSize: 18)),
                     Text(
                       "Rs. ${calculateTotal()}",
-                      style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
+                      style: theme.textTheme.bodyLarge
+                          ?.copyWith(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
                   ],
                 ),
@@ -162,14 +163,15 @@ class _CartScreenState extends State<CartScreen> {
                   child: ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
+                      backgroundColor: theme.colorScheme.primary,
                       padding: const EdgeInsets.symmetric(vertical: 15),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    child: const Text("Checkout",
-                        style: TextStyle(color: Colors.white, fontSize: 16)),
+                    child: Text("Checkout",
+                        style: theme.textTheme.bodyLarge?.copyWith(
+                            color: theme.colorScheme.onPrimary, fontSize: 16)),
                   ),
                 ),
               ],

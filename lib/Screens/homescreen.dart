@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:aura_app/models/transition.dart';
+import 'package:aura_app/Screens/product.dart';
 
 void main() {
   runApp(const MyApp());
@@ -162,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: isLandscape ? 5 : 2,
+                  crossAxisCount: isLandscape ? 4 : 2,
                   mainAxisSpacing: 15,
                   crossAxisSpacing: 15,
                   childAspectRatio: 0.65,
@@ -173,7 +175,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, '/product');
+                          Navigator.of(context).push(
+                            FadePageRoute(page: const ProductDetailScreen()),
+                          );
                         },
                         child: Image.network(
                           products[index]["image"],
