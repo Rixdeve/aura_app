@@ -1,22 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:aura_app/models/productobj.dart';
 import 'package:aura_app/models/transition.dart';
 import 'package:aura_app/Screens/product.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: const HomeScreen(),
-    );
-  }
-}
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -26,6 +13,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<Product> products = [];
+  bool isLoading = true;
+  String selectedValue = 'Value';
+
   final List<String> brandLogos = [
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDs0ZEzCw4VfdjoOIno3Xzy3WNvK5V2kLIjA&s",
     "https://1000logos.net/wp-content/uploads/2018/10/Seiko-Logo.png",
@@ -39,50 +30,27 @@ class _HomeScreenState extends State<HomeScreen> {
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2e_impr6ewrcfxUhqE5ZA3xnE7paS_5LyQw&s"
   ];
 
-  final List<Map<String, dynamic>> products = [
-    {
-      "image":
-          "https://www.hlgross.com/cdn/shop/files/m126233-0035_drp-upright-bba-with-shadow.png?v=1720528979",
-      "name": "Rolex",
-      "model": "Cosmograph",
-      "price": "Rs. 400000",
-    },
-    {
-      "image":
-          "https://cdn2.jomashop.com/media/catalog/product/cache/fc2ff48f80400416c47c36b80c0a3202/s/e/seiko-seiko-5-automatic-white-dial-mens-watch-snkd97j1_1.jpg?width=546&height=546",
-      "name": "Seiko",
-      "model": "SNKDY082",
-      "price": "Rs. 350000",
-    },
-    {
-      "image":
-          "https://citizenwatch.widen.net/content/c155b5cxmk/webp/TSUYOSA.webp?u=41zuoe&width=800&height=800&quality=80&crop=false&keep=c&color=F9F8F6",
-      "name": "Citizen",
-      "model": "Tsuyosa",
-      "price": "Rs. 250000",
-    },
-    {
-      "image": "https://blink.lk/wp-content/uploads/2024/07/G1050.png",
-      "name": "Casio",
-      "model": "G-Shock",
-      "price": "Rs. 50000",
-    },
-    {
-      "image": "https://m.media-amazon.com/images/I/71ahg3sYRAL.jpg",
-      "name": "Victoria's Secret",
-      "model": "Bombshell",
-      "price": "Rs. 200000",
-    },
-    {
-      "image":
-          "https://www.chanel.com/images/w_0.51,h_0.51,c_crop/q_auto:good,f_auto,fl_lossy,dpr_1.1/w_1920/n-5-eau-de-parfum-spray-3-4fl-oz--packshot-default-125530-9539148742686.jpg",
-      "name": "Channel",
-      "model": "COCO Medemoiselle",
-      "price": "Rs. 50000",
-    },
-  ];
+  @override
+  void initState() {
+    super.initState();
+    fetchProducts();
+  }
 
-  String selectedValue = 'Value';
+  Future<void> fetchProducts() async {
+    final response = await http.get(Uri.parse(
+        'https://aura-luxury-master-e3rrhu.laravel.cloud/api/products'));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      setState(() {
+        products = data.map((item) => Product.fromJson(item)).toList();
+        isLoading = false;
+      });
+    } else {
+      setState(() => isLoading = false);
+      throw Exception('Failed to load products');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,117 +66,131 @@ class _HomeScreenState extends State<HomeScreen> {
           height: 65,
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.network(
-              "https://drive.google.com/uc?export=view&id=1S8Y3gk4DpVbDBQITX4jC5qdNGt-rvg33",
-              height: isLandscape ? 180 : 120,
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: DropdownButton<String>(
-                value: selectedValue,
-                isExpanded: true,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    selectedValue = newValue!;
-                  });
-                },
-                items: <String>['Value', 'Perfume', 'Watches']
-                    .map<DropdownMenuItem<String>>(
-                      (String value) => DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      ),
-                    )
-                    .toList(),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: isLandscape ? 8 : 4,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                ),
-                itemCount: brandLogos.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(8),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.network(
+                    "https://drive.google.com/uc?export=view&id=1S8Y3gk4DpVbDBQITX4jC5qdNGt-rvg33",
+                    height: isLandscape ? 180 : 120,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: DropdownButton<String>(
+                      value: selectedValue,
+                      isExpanded: true,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          selectedValue = newValue!;
+                        });
+                      },
+                      items: <String>['Value', 'Perfume', 'Watches']
+                          .map<DropdownMenuItem<String>>(
+                            (String value) => DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            ),
+                          )
+                          .toList(),
                     ),
-                    padding: const EdgeInsets.all(5),
-                    child: Image.network(
-                      brandLogos[index],
-                      fit: BoxFit.contain,
+                  ),
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: isLandscape ? 8 : 4,
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10,
+                      ),
+                      itemCount: brandLogos.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          padding: const EdgeInsets.all(5),
+                          child: Image.network(
+                            brandLogos[index],
+                            fit: BoxFit.contain,
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
+                  ),
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: isLandscape ? 4 : 2,
+                        mainAxisSpacing: 15,
+                        crossAxisSpacing: 15,
+                        childAspectRatio: 0.65,
+                      ),
+                      itemCount: products.length,
+                      itemBuilder: (context, index) {
+                        final product = products[index];
+                        return Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  FadePageRoute(
+                                      page: ProductDetailScreen(
+                                          productId: product.id)),
+                                );
+                              },
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.network(
+                                  'https://storage.googleapis.com/aura_images/${product.imageUrl}',
+                                  height: isLandscape ? 140 : 120,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      const Icon(Icons.broken_image,
+                                          color: Colors.grey),
+                                ),
+                              ),
+                            ),
+                            Text(
+                              product.brand.toUpperCase(),
+                              style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                            Text(
+                              product.productName,
+                              style: const TextStyle(
+                                  fontSize: 14, color: Colors.grey),
+                            ),
+                            Text(
+                              'Rs. ${product.price.toStringAsFixed(0)}',
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                ],
               ),
             ),
-            const SizedBox(height: 10),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: isLandscape ? 4 : 2,
-                  mainAxisSpacing: 15,
-                  crossAxisSpacing: 15,
-                  childAspectRatio: 0.65,
-                ),
-                itemCount: products.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            FadePageRoute(page: const ProductDetailScreen()),
-                          );
-                        },
-                        child: Image.network(
-                          products[index]["image"],
-                          height: isLandscape ? 140 : 120,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Text(
-                        products[index]["name"],
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        products[index]["model"],
-                        style:
-                            const TextStyle(fontSize: 14, color: Colors.grey),
-                      ),
-                      Text(
-                        products[index]["price"],
-                        style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
-            const SizedBox(height: 20),
-          ],
-        ),
-      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: 0,

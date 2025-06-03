@@ -50,7 +50,13 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const LoginScreen(),
         '/home': (context) => const HomeScreen(),
-        '/product': (context) => const ProductDetailScreen(),
+        '/product': (context) {
+          // Replace 'someProductId' with the actual product ID you want to pass
+          final String productId =
+              ModalRoute.of(context)?.settings.arguments as String? ??
+                  'someProductId';
+          return ProductDetailScreen(productId: productId);
+        },
         '/cart': (context) => const CartScreen(),
         '/profile': (context) => const ProfileScreen(),
         '/signup': (context) => const SignupScreen(),
