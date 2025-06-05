@@ -34,14 +34,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
-        final jsonData = jsonResponse['data'];
+        print("Response Body: ${response.body}");
 
-        if (jsonData == null) {
+        if (jsonResponse == null) {
           print("Product data is null.");
         }
 
         setState(() {
-          product = Product.fromJson(jsonData);
+          product = Product.fromJson(jsonResponse);
           isLoading = false;
         });
       } else {

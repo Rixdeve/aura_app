@@ -145,6 +145,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             GestureDetector(
                               onTap: () {
+                                print("product: ${product.id}");
+
                                 Navigator.of(context).push(
                                   FadePageRoute(
                                       page: ProductDetailScreen(
