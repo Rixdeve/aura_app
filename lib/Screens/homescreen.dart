@@ -229,6 +229,9 @@ class _HomeScreenState extends State<HomeScreen> {
             case 2:
               Navigator.pushNamed(context, '/profile');
               break;
+            case 3:
+              Navigator.pushNamed(context, '/about');
+              break;
           }
         },
         items: const [
@@ -242,6 +245,10 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person, color: Colors.black),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.info, color: Colors.black),
             label: '',
           ),
         ],

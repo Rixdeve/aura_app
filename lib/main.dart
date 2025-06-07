@@ -6,6 +6,7 @@ import 'package:aura_app/Screens/signup.dart';
 import 'package:aura_app/Screens/cart.dart';
 import 'package:aura_app/Screens/profile.dart';
 import 'package:aura_app/Screens/report.dart';
+import 'package:aura_app/Screens/about_us.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:aura_app/providers/auth_provider.dart';
@@ -121,6 +122,7 @@ class _MyAppState extends State<MyApp> {
           final int orderId = ModalRoute.of(context)?.settings.arguments as int;
           return ReportProductScreen(orderId: orderId);
         },
+        '/about': (context) => const AboutUsPage(),
       },
     );
   }
