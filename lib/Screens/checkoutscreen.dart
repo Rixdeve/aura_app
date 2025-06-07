@@ -6,6 +6,9 @@ import '../providers/auth_provider.dart';
 import '../db/order_db.dart';
 import '../models/cart_item.dart';
 import '../db/cart_db.dart';
+import 'package:flutterwave_standard/flutterwave.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutterwave_standard/models/requests/customer.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
@@ -15,6 +18,40 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
+  Future<bool> processFlutterwavePayment({
+    required String name,
+    required String email,
+    required String phone,
+    required int amount,
+  }) async {
+    final Customer customer = Customer(
+      name: name,
+      phoneNumber: phone,
+      email: email,
+    );
+
+    final Flutterwave flutterwave = Flutterwave(
+      publicKey: "FLWPUBK_TEST-321d014cace5c1713f8c2c0f37f0808e-X",
+      currency: "NGN",
+      redirectUrl: "https://aura-luxury-master-e3rrhu.laravel.cloud/",
+      txRef: DateTime.now().millisecondsSinceEpoch.toString(),
+      amount: amount.toString(),
+      customer: customer,
+      paymentOptions: "card",
+      customization: Customization(
+        title: "Aura Checkout",
+        description: "Order Payment",
+        logo:
+            "https://drive.google.com/uc?export=view&id=1BTlJm1oIIsgK-w5tOC1BG3Gg8hvG4UN_",
+      ),
+      isTestMode: true,
+    );
+
+    final ChargeResponse? response = await flutterwave.charge(context);
+
+    return response != null && response.status == "successful";
+  }
+
   final TextEditingController addressController = TextEditingController();
   String? location;
 
@@ -91,25 +128,40 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   return;
                 }
 
-                await OrderDatabase.instance.insertOrder(
-                  userId: user?['id'],
-                  name: user?['name'],
-                  email: user?['email'],
-                  phone: user?['phone'],
-                  address: addressController.text,
-                  location: location ?? '',
-                  total: cart.total,
-                  items: cart.items,
+                final paid = await processFlutterwavePayment(
+                  name: user?['name'] ?? '',
+                  email: user?['email'] ?? '',
+                  phone: user?['phone'] ?? '',
+                  amount: cart.total,
                 );
 
-                await cart.clearCart();
+                if (paid) {
+                  await OrderDatabase.instance.insertOrder(
+                    userId: user?['id'],
+                    name: user?['name'],
+                    email: user?['email'],
+                    phone: user?['phone'],
+                    address: addressController.text,
+                    location: location ?? '',
+                    total: cart.total,
+                    items: cart.items,
+                  );
 
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Order placed!")),
-                );
-                Navigator.pop(context);
+                  await cart.clearCart();
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text("Payment successful & Order placed!")),
+                  );
+                  Navigator.pop(context);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text("Payment failed or cancelled")),
+                  );
+                }
               },
-              child: const Text("Place Order"),
+              child: const Text("Pay Now"),
             ),
           ],
         ),
