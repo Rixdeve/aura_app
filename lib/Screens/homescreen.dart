@@ -17,6 +17,12 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isLoading = true;
   String selectedValue = 'Value';
 
+  List<String> categories = [
+    'Value',
+    'Perfume',
+    'Watch',
+  ];
+
   final List<String> brandLogos = [
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDs0ZEzCw4VfdjoOIno3Xzy3WNvK5V2kLIjA&s",
     "https://1000logos.net/wp-content/uploads/2018/10/Seiko-Logo.png",
@@ -42,8 +48,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
+      final fetchedProducts =
+          data.map((item) => Product.fromJson(item)).toList();
+
+      final uniqueCategories = {'All'};
+      for (var product in fetchedProducts) {
+        if (product.category.isNotEmpty) {
+          uniqueCategories.add(product.category);
+        }
+      }
+
       setState(() {
-        products = data.map((item) => Product.fromJson(item)).toList();
+        products = fetchedProducts;
+        categories = uniqueCategories.toList();
+        selectedValue = 'All';
         isLoading = false;
       });
     } else {
@@ -56,6 +74,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     bool isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
+
+    // Filter products based on selected category
+    List<Product> displayedProducts = selectedValue == 'All'
+        ? products
+        : products.where((p) => p.category == selectedValue).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -89,14 +112,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           selectedValue = newValue!;
                         });
                       },
-                      items: <String>['Value', 'Perfume', 'Watches']
-                          .map<DropdownMenuItem<String>>(
-                            (String value) => DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            ),
-                          )
-                          .toList(),
+                      items: categories.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -138,9 +159,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         crossAxisSpacing: 15,
                         childAspectRatio: 0.65,
                       ),
-                      itemCount: products.length,
+                      itemCount: displayedProducts.length,
                       itemBuilder: (context, index) {
-                        final product = products[index];
+                        final product = displayedProducts[index];
+
                         return Column(
                           children: [
                             GestureDetector(

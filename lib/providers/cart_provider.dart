@@ -11,14 +11,12 @@ class CartProvider with ChangeNotifier {
   int get total =>
       _items.fold(0, (sum, item) => sum + (item.price * item.quantity));
 
-  /// Load cart items for the current user
   Future<void> loadCartItems(String userId) async {
     _userId = userId;
     _items = await CartDatabase.instance.getCartItemsByUser(userId);
     notifyListeners();
   }
 
-  /// Add item or increment if exists
   Future<void> addItem(CartItem item) async {
     await CartDatabase.instance.insertItem(item);
     print("Added to cart: ${item.name}, Quantity: ${item.quantity}");
@@ -28,7 +26,6 @@ class CartProvider with ChangeNotifier {
     }
   }
 
-  /// Increment item quantity
   Future<void> increment(int index) async {
     final updatedItem = _items[index];
     updatedItem.quantity += 1;
@@ -39,7 +36,6 @@ class CartProvider with ChangeNotifier {
     }
   }
 
-  /// Decrement item quantity
   Future<void> decrement(int index) async {
     final updatedItem = _items[index];
     if (updatedItem.quantity > 1) {
@@ -52,7 +48,6 @@ class CartProvider with ChangeNotifier {
     }
   }
 
-  /// Clear cart for current user
   Future<void> clearCart() async {
     if (_userId != null) {
       await CartDatabase.instance.clearCartByUser(_userId!);

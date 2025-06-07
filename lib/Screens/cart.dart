@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/cart_provider.dart';
 import '../providers/auth_provider.dart';
+import 'checkoutscreen.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -78,7 +79,13 @@ class _CartScreenState extends State<CartScreen> {
                       Text("Total: Rs. ${cart.total}",
                           style: const TextStyle(fontSize: 18)),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const CheckoutScreen()),
+                          );
+                        },
                         child: const Text("Checkout"),
                       ),
                     ],

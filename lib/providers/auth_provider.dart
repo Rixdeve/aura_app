@@ -36,7 +36,7 @@ class AuthProvider with ChangeNotifier {
       if (savedUser != null) {
         print("SQFLite Saved User: ${savedUser.name} (${savedUser.email})");
       } else {
-        print("❌ No user found in DB after insert.");
+        print("No user found.");
       }
 
       notifyListeners();
@@ -76,7 +76,7 @@ class AuthProvider with ChangeNotifier {
       if (savedUser != null) {
         print("SQFLite Saved User: ${savedUser.name} (${savedUser.email})");
       } else {
-        print("No user found in DB after registration insert.");
+        print("No user found in DB.");
       }
 
       notifyListeners();

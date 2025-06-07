@@ -1,5 +1,4 @@
 import 'package:aura_app/Screens/profile.dart';
-import 'package:flutter/material.dart';
 import 'package:aura_app/Screens/homescreen.dart';
 import 'package:aura_app/Screens/login.dart';
 import 'package:aura_app/Screens/product.dart';
@@ -11,9 +10,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:aura_app/providers/auth_provider.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:provider/provider.dart';
 import 'package:aura_app/providers/cart_provider.dart';
-// import 'providers/cart_provider.dart';
+import 'dart:async';
+import 'package:sensors_plus/sensors_plus.dart';
+import 'providers/auth_provider.dart';
+import 'providers/cart_provider.dart';
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() {
   runApp(
@@ -27,12 +30,52 @@ void main() {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  StreamSubscription? _accelerometerSubscription;
+  final double shakeThreshold = 15.0;
+  List<double> _lastValues = [0, 0, 0];
+
+  @override
+  void initState() {
+    super.initState();
+    _startShakeListener();
+  }
+
+  void _startShakeListener() {
+    _accelerometerSubscription = accelerometerEvents.listen((event) {
+      double dx = event.x - _lastValues[0];
+      double dy = event.y - _lastValues[1];
+      double dz = event.z - _lastValues[2];
+
+      double delta = dx.abs() + dy.abs() + dz.abs();
+
+      if (delta > shakeThreshold) {
+        print("Navigating to Login.");
+        navigatorKey.currentState
+            ?.pushNamedAndRemoveUntil('/', (route) => false);
+      }
+
+      _lastValues = [event.x, event.y, event.z];
+    });
+  }
+
+  @override
+  void dispose() {
+    _accelerometerSubscription?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Roboto',
@@ -66,7 +109,6 @@ class MyApp extends StatelessWidget {
         '/': (context) => const LoginScreen(),
         '/home': (context) => const HomeScreen(),
         '/product': (context) {
-          // Replace 'someProductId' with the actual product ID you want to pass
           final String productId =
               ModalRoute.of(context)?.settings.arguments as String? ??
                   'someProductId';
@@ -75,7 +117,10 @@ class MyApp extends StatelessWidget {
         '/cart': (context) => const CartScreen(),
         '/profile': (context) => const ProfileScreen(),
         '/signup': (context) => const SignupScreen(),
-        '/report': (context) => const ReportProductScreen(),
+        '/report': (context) {
+          final int orderId = ModalRoute.of(context)?.settings.arguments as int;
+          return ReportProductScreen(orderId: orderId);
+        },
       },
     );
   }
