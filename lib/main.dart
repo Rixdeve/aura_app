@@ -7,9 +7,24 @@ import 'package:aura_app/Screens/signup.dart';
 import 'package:aura_app/Screens/cart.dart';
 import 'package:aura_app/Screens/profile.dart';
 import 'package:aura_app/Screens/report.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:aura_app/providers/auth_provider.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:provider/provider.dart';
+import 'package:aura_app/providers/cart_provider.dart';
+// import 'providers/cart_provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => CartProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

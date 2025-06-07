@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../models/productobj.dart';
+import '../models/cart_item.dart';
+import '../db/cart_db.dart';
+import 'package:provider/provider.dart';
+import '../providers/cart_provider.dart';
+import '../providers/auth_provider.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final String productId;
@@ -97,8 +102,39 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       ),
                       const SizedBox(height: 10),
                       ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/cart');
+                        onPressed: () async {
+                          final authProvider =
+                              Provider.of<AuthProvider>(context, listen: false);
+                          final userId = authProvider.user?['id']?.toString();
+
+                          if (userId == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text(
+                                      "You must be logged in to add to cart")),
+                            );
+                            return;
+                          }
+
+                          final cartItem = CartItem(
+                            id: product!.id,
+                            name: product!.productName,
+                            image: product!.imageUrl,
+                            price: product!.price.toInt(),
+                            quantity: 1,
+                            userId: userId,
+                          );
+
+                          await Provider.of<CartProvider>(context,
+                                  listen: false)
+                              .addItem(cartItem);
+
+                          print(
+                              "Product '${product!.productName}' added to cart for user $userId");
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Added to cart")),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
@@ -108,7 +144,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             borderRadius: BorderRadius.circular(5),
                           ),
                         ),
-                        child: const Text('BUY NOW',
+                        child: const Text('ADD TO CART',
                             style: TextStyle(color: Colors.white)),
                       ),
                       const SizedBox(height: 10),
