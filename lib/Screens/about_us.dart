@@ -68,7 +68,7 @@ class AboutUsPage extends StatelessWidget {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        currentIndex: 1, // Highlight cart tab
+        currentIndex: 1,
         onTap: (index) {
           switch (index) {
             case 0:

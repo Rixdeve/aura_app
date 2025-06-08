@@ -75,7 +75,6 @@ class _HomeScreenState extends State<HomeScreen> {
     bool isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
 
-    // Filter products based on selected category
     List<Product> displayedProducts = selectedValue == 'All'
         ? products
         : products.where((p) => p.category == selectedValue).toList();

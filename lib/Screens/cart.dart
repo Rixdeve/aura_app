@@ -22,8 +22,7 @@ class _CartScreenState extends State<CartScreen> {
 
       final userId = authProvider.user?['id'];
       if (userId != null) {
-        cartProvider
-            .loadCartItems(userId); // Pass userId to load user-specific cart
+        cartProvider.loadCartItems(userId);
       }
     });
   }
@@ -95,7 +94,7 @@ class _CartScreenState extends State<CartScreen> {
             ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        currentIndex: 1, // Highlight cart tab
+        currentIndex: 1,
         onTap: (index) {
           switch (index) {
             case 0:

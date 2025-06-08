@@ -71,8 +71,6 @@ class _ReportProductScreenState extends State<ReportProductScreen> {
               maxLines: 4,
             ),
             const SizedBox(height: 20),
-
-            // Camera button and preview
             Row(
               children: [
                 GestureDetector(
@@ -91,7 +89,6 @@ class _ReportProductScreenState extends State<ReportProductScreen> {
                 ),
               ],
             ),
-
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _submit,

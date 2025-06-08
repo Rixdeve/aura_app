@@ -27,7 +27,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     final db = await OrderDatabase.instance.database;
 
-    // Query to join orders with their items
     final result = await db.rawQuery('''
     SELECT o.order_id, o.total, o.address, GROUP_CONCAT(oi.name, ', ') AS products
     FROM orders o
