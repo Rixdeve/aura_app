@@ -7,6 +7,7 @@ import 'package:aura_app/Screens/cart.dart';
 import 'package:aura_app/Screens/profile.dart';
 import 'package:aura_app/Screens/report.dart';
 import 'package:aura_app/Screens/about_us.dart';
+import 'package:aura_app/utils/network_status.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:aura_app/providers/auth_provider.dart';
@@ -16,6 +17,8 @@ import 'dart:async';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'providers/auth_provider.dart';
 import 'providers/cart_provider.dart';
+import 'package:provider/provider.dart';
+import './utils/network_status.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -23,8 +26,11 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider<AuthProvider>(
+          create: (context) => AuthProvider(),
+        ),
         ChangeNotifierProvider(create: (_) => CartProvider()),
+        ChangeNotifierProvider(create: (_) => NetworkStatusNotifier()),
       ],
       child: const MyApp(),
     ),
@@ -50,7 +56,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _startShakeListener() {
-    _accelerometerSubscription = accelerometerEvents.listen((event) {
+    _accelerometerSubscription = accelerometerEvents.listen((event) async {
       double dx = event.x - _lastValues[0];
       double dy = event.y - _lastValues[1];
       double dz = event.z - _lastValues[2];
@@ -58,6 +64,9 @@ class _MyAppState extends State<MyApp> {
       double delta = dx.abs() + dy.abs() + dz.abs();
 
       if (delta > shakeThreshold) {
+        final authProvider = Provider.of<AuthProvider>(context, listen: false);
+        await authProvider.logout();
+
         print("Navigating to Login.");
         navigatorKey.currentState
             ?.pushNamedAndRemoveUntil('/', (route) => false);

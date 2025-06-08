@@ -53,7 +53,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: () {},
+            onPressed: () async {
+              final authProvider =
+                  Provider.of<AuthProvider>(context, listen: false);
+              await authProvider.logout();
+
+              Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+            },
           ),
         ],
       ),

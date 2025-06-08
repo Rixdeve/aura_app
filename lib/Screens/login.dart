@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
+import '../utils/network_status.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -41,6 +42,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final networkStatus = context.watch<NetworkStatusNotifier>().value;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -58,6 +61,10 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text("${networkStatus == true ? 'Online' : 'Offline'}",
+                  style: TextStyle(
+                      color: networkStatus == true ? Colors.green : Colors.red,
+                      fontSize: 16)),
               const Text("Email",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               TextFormField(
